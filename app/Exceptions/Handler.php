@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Asm89\Stack\CorsService;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -48,7 +49,10 @@ class Handler extends ExceptionHandler
         }
 
         if ($e instanceof CurlException) {
-            return response()->json([], 404);
+            /** @var CorsService $cors */
+            $cors = app()->make('Asm89\Stack\CorsService');
+            $response = response()->json([], 404);
+            return $cors->addActualRequestHeaders($response, $request);
         }
 
         return parent::render($request, $e);
