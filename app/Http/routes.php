@@ -1,7 +1,7 @@
 <?php
 
 get('/', function () {
-    return view('welcome');
+    return redirect('http://thetvdb.com/');
 });
 
 get('/show/{showId}', 'ApiController@getShowById');
