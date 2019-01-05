@@ -2,23 +2,52 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests;
+use CanIHaveSomeCoffee\TheTVDbAPI\Exception\ResourceNotFoundException;
+use CanIHaveSomeCoffee\TheTVDbAPI\Model\BasicSeries;
+use CanIHaveSomeCoffee\TheTVDbAPI\TheTVDbAPI;
 use Illuminate\Http\JsonResponse;
 
 class ApiController extends Controller {
 
   /** @var \Moinax\TvDb\Client */
   protected $tvDb;
+  /** @var TheTVDbAPI */
+  protected $tvDbV2;
 
   public function __construct()
   {
     $this->tvDb = app()->make('TvDb');
+    $this->tvDbV2 = app()->make('TvDbV2');
   }
 
   public function getShowById($showId)
   {
     $show = $this->tvDb->getSerie($showId);
     return $show->jsonSerialize();
+  }
+
+  public function getShowBySlug($slug)
+  {
+    $slug = strtolower(trim($slug));
+
+    $results = [];
+    try {
+        $results = $this->tvDbV2->search()->searchBySlug($slug);
+    } catch (ResourceNotFoundException $e) {
+        // noop
+    }
+
+    if (
+      !$results
+      || !is_array($results)
+      || empty($results[0])
+      || !$results[0] instanceof BasicSeries
+      || $results[0]->slug !== $slug
+    ) {
+      return JsonResponse::create([], 404);
+    }
+
+    return $this->getShowById($results[0]->id);
   }
 
   public function getShowEpisodes($showId)

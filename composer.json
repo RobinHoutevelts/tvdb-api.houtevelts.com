@@ -8,14 +8,19 @@
         {
             "type": "vcs",
             "url": "https://github.com/RobinHoutevelts/TvDb"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/RobinHoutevelts/theTVDbAPI.git"
         }
     ],
     "require": {
-        "php": ">=5.5.9",
+        "php": ">=7.1",
         "laravel/framework": "5.1.*",
         "barryvdh/laravel-httpcache": "0.2.x@dev",
         "barryvdh/laravel-cors": "0.7.x@dev",
-        "moinax/tvdb": "dev-master"
+        "moinax/tvdb": "dev-master",
+        "canihavesomecoffee/thetvdbapi": "dev-master"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

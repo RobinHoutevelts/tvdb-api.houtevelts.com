@@ -148,6 +148,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\TvDbProvider::class,
+        App\Providers\TvDbV2Provider::class,
 
     ],
 
