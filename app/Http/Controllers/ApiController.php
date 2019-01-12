@@ -42,7 +42,7 @@ class ApiController extends Controller {
       || !is_array($results)
       || empty($results[0])
       || !$results[0] instanceof BasicSeries
-      || $results[0]->slug !== $slug
+      || strtolower(trim($results[0]->slug)) !== $slug
     ) {
       return JsonResponse::create([], 404);
     }
